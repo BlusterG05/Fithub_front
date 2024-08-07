@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'Login',
@@ -37,6 +37,7 @@ export default defineComponent({
     const password = ref('');
     const error = ref('');
     const router = useRouter();
+    const route = useRoute();
 
     const login = async (email: string, password: string) => {
       const response = await axios.post('http://localhost:3000/api/admin/login', {
@@ -45,6 +46,7 @@ export default defineComponent({
       });
       const token = response.data.token;
       localStorage.setItem('token', token);
+      window.dispatchEvent(new CustomEvent('user-logged-in', { detail: token }));
     };
 
     const handleLogin = async () => {
@@ -57,8 +59,18 @@ export default defineComponent({
     };
 
     const handleGoogleLogin = () => {
-  window.location.href = 'http://localhost:3000/auth/oauth';
-};
+      window.location.href = 'http://localhost:3000/auth/oauth';
+    };
+
+    onMounted(() => {
+      // Verificar si hay un token en la URL (después de OAuth)
+      const token = route.query.token as string;
+      if (token) {
+        localStorage.setItem('token', token);
+        window.dispatchEvent(new CustomEvent('user-logged-in', { detail: token }));
+        router.push('/');
+      }
+    });
 
     return {
       email,
@@ -70,6 +82,7 @@ export default defineComponent({
   }
 });
 </script>
+
 
 <style scoped>
 .login-container {
