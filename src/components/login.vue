@@ -40,7 +40,7 @@ export default defineComponent({
     const route = useRoute();
 
     const login = async (email: string, password: string) => {
-      const response = await axios.post('http://localhost:3000/api/admin/login', {
+      const response = await axios.post('/api/admin/login', {
         Mail: email,
         Password: password
       });
@@ -59,7 +59,7 @@ export default defineComponent({
     };
 
     const handleGoogleLogin = () => {
-      window.location.href = 'http://localhost:3000/auth/oauth';
+      window.location.href = '/auth/oauth';
     };
 
     onMounted(() => {

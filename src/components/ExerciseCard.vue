@@ -1,31 +1,40 @@
 <template>
-    <div class="exercise-card">
-      <div class="exercise-header">
-        <h3 class="exercise-title">{{ exercise.exercise_name }}</h3>
-        <span class="exercise-discipline">{{ exercise.exercise_discipline_name }}</span>
+  <div class="exercise-card" v-if="exercise">
+    <div class="exercise-header">
+      <h3 class="exercise-title">{{ exercise.exercise_name }}</h3>
+      <span class="exercise-discipline">{{ exercise.exercise_discipline_name }}</span>
+    </div>
+    <p class="exercise-description">{{ exercise.exercise_description }}</p>
+    <div class="exercise-details">
+      <div class="detail-item">
+        <span class="detail-icon">🏋️</span>
+        <span class="detail-text">{{ exercise.exercise_group_name }}</span>
       </div>
-      <p class="exercise-description">{{ exercise.exercise_description }}</p>
-      <div class="exercise-details">
-        <div class="detail-item">
-          <span class="detail-icon">🏋️</span>
-          <span class="detail-text">{{ exercise.exercise_group_name }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-icon">🎯</span>
-          <span class="detail-text">{{ exercise.exercise_category_name }}</span>
-        </div>
-      </div>
-      <div class="exercise-recommendations">
-        <h4 class="recommendations-title">Recomendaciones</h4>
-        <p>{{ exercise.exercise_recommendations }}</p>
+      <div class="detail-item">
+        <span class="detail-icon">🎯</span>
+        <span class="detail-text">{{ exercise.exercise_category_name }}</span>
       </div>
     </div>
-  </template>
-  
-  <script setup lang="ts">
-defineProps({
-  exercise: Object
-});
+    <div class="exercise-recommendations">
+      <h4 class="recommendations-title">Recomendaciones</h4>
+      <p>{{ exercise.exercise_recommendations }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { defineProps } from 'vue';
+
+interface Exercise {
+  exercise_name: string;
+  exercise_discipline_name: string;
+  exercise_description: string;
+  exercise_group_name: string;
+  exercise_category_name: string;
+  exercise_recommendations: string;
+}
+
+const props = defineProps<{ exercise?: Exercise }>();
 </script>
 
 <style scoped>
